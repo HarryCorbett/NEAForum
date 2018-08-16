@@ -7,8 +7,8 @@ $_SESSION['message'] = '';
 if(isset($_POST['email'])){
 
     //Prevent sql injection
-    $email = mysqli_real_escape_string($conn, $_post['email']);
-    $password = mysqli_real_escape_string($conn, $_post['password']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
 
     $sql = "select password from users where email = '$email'";
