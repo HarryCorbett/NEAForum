@@ -1,3 +1,9 @@
+<? session_start();
+?>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
 <html>
 <head>
     <style>
@@ -44,9 +50,12 @@
     </style>
 </head>
 
+
+<!------------------------------------------------>
+
+
 <div class="w3-bar w3-light-grey w3-top" style="letter-spacing:4px;">
     <a href="#" class="w3-bar-item w3-button">Home</a>
-    <a href="#" class="w3-bar-item w3-button">Create Post</a>
     <a href="#" class="w3-bar-item w3-button w3-right" id="loginbtn">Login</a>
     <a href="#" class="w3-bar-item w3-button w3-right" id="createbtn">Create an account</a>
 </div>
@@ -64,11 +73,12 @@
 
             <form class="form" action="includes/login.php" method="post" enctype="multipart/form-data" autocomplete="off">
 
-            <div class="alert alert-error"><?=$_SESSION['message']?></div>
             <br>
             <header style="letter-spacing: 4px;" class="w3-select w3-center"> Login</header>
             <br>
 
+            <label style="letter-spacing: 2px; text-align: center;" id="loginerror" class = "w3-text-red"><? echo $_SESSION['loginmessage'] ?> </label>
+            <br>
             <label for="email" class="w3-wide w3-left" style="letter-spacing: 2px;">Email</label>
             <input class="w3-select" type="text" placeholder="Enter Email" name="email" required><br>
 
@@ -96,23 +106,32 @@
 
     // When the user clicks the button, open the modal
     loginbtn.onclick = function() {
+        <?php $_SESSION['loginmessage'] = NULL ?>
         loginmodal.style.display = "block";
-    };
+    }
 
     // When the user clicks on <span> (x), close the modal
     loginspan.onclick = function() {
         loginmodal.style.display = "none";
+
     };
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target === loginmodal) {
             loginmodal.style.display = "none";
+
         }
         if (event.target === createmodal) {
             createmodal.style.display = "none";
         }
     }
+
+    if(window.location.href.indexOf('#loginerror') != -1) {
+        loginmodal.style.display = "block";
+    }
+
+
 </script>
 
 <!------------------------------------------------>
@@ -135,8 +154,9 @@
 
             <form class="form" action="includes/create_user.php" method="post" enctype="multipart/form-data" autocomplete="off">
 
-                <div class="alert alert-error"><?=$_SESSION['message']?></div>
+                <label style="letter-spacing: 2px; text-align: center;" class = "w3-text-red"><? echo $_SESSION['createmessage'] ?> </label>
                 <br>
+
                 <label for="email" class="w3-wide w3-left" style="letter-spacing: 2px;">Email</label>
                 <input class="w3-select" type="text" placeholder="Enter Email" name="email" required><br>
 
@@ -177,6 +197,11 @@
     createspan.onclick = function() {
         createmodal.style.display = "none";
     }
+
+    if(window.location.href.indexOf('#createerror') != -1) {
+        createmodal.style.display = "block";
+    }
+
 </script>
 </html>
 

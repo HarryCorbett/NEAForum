@@ -1,4 +1,3 @@
-
 <head>
     <link rel="Stylesheet" type="text/css" href="css/app.css"/>
 </head>
@@ -6,12 +5,14 @@
 <body>
 
 <?php
-if (isset($_SESSION['user_id'])) {
+session_start();
+if (isset($_SESSION['user'])) {
     include 'navbar_loggedin.php';
 } else {
     include 'navbar_loggedout.php';
 }
 ?>
+
 
 <title>Education Forum</title>
 
