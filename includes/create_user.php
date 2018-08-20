@@ -2,7 +2,7 @@
 include 'connect.php';
 
 session_start();
-$_SESSION['message'] = '';
+$_SESSION['createmessage'] = '';
 
 //checking passwords match
 if($_POST['password'] == $_POST['confirm_password']) {
@@ -17,13 +17,15 @@ if($_POST['password'] == $_POST['confirm_password']) {
     $sql = "INSERT INTO users (email, name, password, date, rating)
             VALUES ('$email', '$username', '$password', NOW(), 0)";
 
+
     if(mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = 'registration complete';
+        header("Location: .././");
     } else {
-        $_SESSION['message'] = 'User could not be created';
+        $_SESSION['createmessage'] = 'User could not be created';
+        header("location: ../#createerror");
     }
 } else {
-    $_SESSION['message'] = 'Passwords do not match';
+    $_SESSION['createmessage'] = 'Passwords do not match';
+    header("location: ../#createerror");
 }
 
-header("Location: ../");

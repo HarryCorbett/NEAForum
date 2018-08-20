@@ -55,7 +55,7 @@
 
 
 <div class="w3-bar w3-light-grey w3-top" style="letter-spacing:4px;">
-    <a href="#" class="w3-bar-item w3-button">Home</a>
+    <a href="../" class="w3-bar-item w3-button">Home</a>
     <a href="#" class="w3-bar-item w3-button w3-right" id="loginbtn">Login</a>
     <a href="#" class="w3-bar-item w3-button w3-right" id="createbtn">Create an account</a>
 </div>
