@@ -50,13 +50,15 @@ if (mysqli_num_rows($result) > 0) {
 
             ?>
 
-                <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;">
+                <a href="postpage.php#<? echo $row['post_id'] ?>" style="text-decoration: none;">
+                <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;" >
                     <label class=""> <? echo $row['post_title'] ?></label><br><br>
                     <label class=""> <? echo $name ?> </label>
                     <label class = "w3-right" > <? echo $row['post_date'] ?></label>
                     <br>
                 </div>
-                <br><br>
+                    <br><br>
+                </a>
 
             <?
 
