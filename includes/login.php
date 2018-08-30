@@ -12,7 +12,7 @@ if(isset($_POST['email'])) {
 
 
     $sql = "select password from users where email = '$email'";
-    $result = @mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $hash = $row['password'];
 

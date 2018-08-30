@@ -7,7 +7,7 @@
 <?php
 
 session_start();
-include 'connect.php';
+include 'includes/connect.php';
 
 if (isset($_SESSION['user'])) {
     include 'navbar_loggedin.php';
@@ -20,34 +20,46 @@ if (isset($_SESSION['user'])) {
 <title>Education Forum</title>
 
 <br>
-<!-- input files -->
-<!-- Notes: enctype specifies how form data should be encoded -->
 
 
+<!-- displaying posts -->
 <?php
 
-$sql = "SELECT post_title, post_content, post_date, post_by FROM posts;";
+$sql = "SELECT post_id, post_title, post_date, post_user FROM posts";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
 
     ?>
 
-<div name="posts" style="margin-left:30%; margin-right:30%;">
+<div style="margin-left:25%; margin-right:25%; margin-top: 5%;">
     <table>
-        <tr>
-            <th style="width: 2% ;">Title</th>
-            <th>Content</th>
-            <th>Date</th>
-            <th>By</th>
-        </tr>
 
         <?
 
     // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row['post_title'] . "</td><td>" . $row['post_content'] . "</td><td>" . $row['post_date'] . "</td><td>" . $row['post_content'] . "</td></tr>"; ?><br><?
-            echo "</table>";
+
+            // finding username for each user id of poster
+            $post_user = $row['post_user'];
+
+            $sql2 = "SELECT DISTINCT name FROM users WHERE id = '$post_user' ";
+            $result2 = mysqli_query($conn, $sql2);
+            $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
+            $name = $row2['name'];
+
+            ?>
+
+                <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;">
+                    <label class=""> <? echo $row['post_title'] ?></label><br><br>
+                    <label class=""> <? echo $name ?> </label>
+                    <label class = "w3-right" > <? echo $row['post_date'] ?></label>
+                    <br>
+                </div>
+                <br><br>
+
+            <?
+
     }
 } else {
     echo "currently no posts";
@@ -56,17 +68,16 @@ if (mysqli_num_rows($result) > 0) {
 </table>
 </div>
 
-<!-- echo " " . $row["title"]. " - contents: " . $row["contents"]. " <br>";
 
-<!-- left here temporarily, working on it in create post:
+<!-- left here temporarily, working on it in create post: -->
+<br>
+<form action="upload.php">
+<label for="upload" class="w3-wide w3-left" style="letter-spacing: 2px;">Attachment ( doesn't currently work )</label><br>
+<input  type="file" name="file"><br>
+<button class="w3-btn w3-light-gray" type="submit" name="upload">Upload</button>
+</form>
 
-<label for="upload" class="w3-wide w3-left" style="letter-spacing: 2px;">Attachment</label><br>
-<input class="w3-select" type="file" name="file"><br>
-<!--<button class="upload w3-btn w3-light-gray w3-select" type="submit" name="submit">Upload</button>
-    button not needed but left for now until i move the contents of upload to run when the form is submitted
-    need to add attachment name to database
-
-<div>
+<!--<div>
     <!-- Download files
     <a href="Uploads/1/TestFile.pdf" download>Download here</a>
 
