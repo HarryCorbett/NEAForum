@@ -18,14 +18,20 @@ if (isset($_SESSION['user'])) {
     <div style="margin-left:25%; margin-right:25%; margin-top: 5%;">
         <table>
 
-            <?
+                    <?
 
-                $sql = "SELECT post_title, post_content, post_date, post_user, post_attachment FROM posts";
+                if (isset($_GET['postid'])) {
+                    $postid = $_GET['postid'];}
+
+                echo $postid;
+
+                $sql = "SELECT * FROM posts WHERE post_id = '$postid' ";
                 $result = mysqli_query($conn, $sql);
                 $row = mysqli_fetch_assoc($result);
                 $blob = $row['post_content'];
 
-                            // finding username for user id of poster
+
+                // finding username for user id of poster
                 $post_user = $row['post_user'];
 
                 $sql2 = "SELECT DISTINCT name FROM users WHERE id = '$post_user' ";
@@ -38,7 +44,7 @@ if (isset($_SESSION['user'])) {
 
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;">
                     <label > <? echo $row['post_title'] ?></label><br><br>
-                    <label > this is where the content will go </label><br><br>
+                    <label > content will go here </label><br><br>
                     <label > <? echo $name ?> </label>
                     <label class = "w3-right" > <? echo $row['post_date'] ?></label>
                     <!-- <a href="Uploads/" download>Download attachment</a> -->

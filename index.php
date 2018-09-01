@@ -28,6 +28,7 @@ if (isset($_SESSION['user'])) {
 $sql = "SELECT post_id, post_title, post_date, post_user FROM posts";
 $result = mysqli_query($conn, $sql);
 
+
 if (mysqli_num_rows($result) > 0) {
 
     ?>
@@ -48,9 +49,13 @@ if (mysqli_num_rows($result) > 0) {
             $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
             $name = $row2['name'];
 
+            echo $row['post_id'];
+
+
             ?>
 
-                <a href="postpage.php#<? echo $row['post_id'] ?>" style="text-decoration: none;">
+
+                <a href="postpage.php?postid=<? echo $row['post_id']; ?>" style="text-decoration: none;">
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;" >
                     <label class=""> <? echo $row['post_title'] ?></label><br><br>
                     <label class=""> <? echo $name ?> </label>
