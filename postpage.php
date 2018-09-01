@@ -23,8 +23,6 @@ if (isset($_SESSION['user'])) {
                 if (isset($_GET['postid'])) {
                     $postid = $_GET['postid'];}
 
-                echo $postid;
-
                 $sql = "SELECT * FROM posts WHERE post_id = '$postid' ";
                 $result = mysqli_query($conn, $sql);
                 $row = mysqli_fetch_assoc($result);

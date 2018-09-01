@@ -3,7 +3,7 @@
 /* temp for having files organised */
 $postid = 1;
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['upload'])) {
     $file = $_FILES['file'];
 
     $fileName = $_FILES['file']['name'];
