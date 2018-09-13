@@ -127,7 +127,7 @@
         }
     }
 
-    if(window.location.href.indexOf('#loginerror') != -1) {
+    if(window.location.href.indexOf('#login') != -1) {
         loginmodal.style.display = "block";
     }
 

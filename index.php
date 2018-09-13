@@ -33,7 +33,7 @@ if (mysqli_num_rows($result) > 0) {
 
     ?>
 
-<div style="margin-left:25%; margin-right:25%; margin-top: 5%;">
+<div style="margin-left:25%; margin-right:25%; margin-top: 5%; margin-bottom: 5%;">
     <table>
 
         <?
@@ -90,15 +90,3 @@ if (mysqli_num_rows($result) > 0) {
 -->
 </body>
 
-
-<!-- Allows to scroll -->
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>

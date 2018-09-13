@@ -29,7 +29,6 @@ if(isset($_POST['email'])) {
             $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
             $_SESSION['user'] = $row['id'];
-            $_SESSION['username'] = $row['name'];
 
 
             $_SESSION['loginmessage'] = '';
