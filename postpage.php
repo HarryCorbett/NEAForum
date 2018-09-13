@@ -44,7 +44,12 @@ if (isset($_SESSION['user'])) {
 
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;">
                     <label > <? echo $row['post_title'] ?></label><br><br>
-                    <label > content will go here </label><br><br>
+                    <label >
+                        <?php
+                            $blobpost = $row['post_content'];
+                            echo $blobpost;
+                        ?>
+                    </label><br><br>
                     <label > <? echo $name ?> </label>
                     <label class = "w3-right" > <? echo $row['post_date'] ?></label>
                     <!-- <a href="Uploads/" download>Download attachment</a> -->
@@ -90,6 +95,8 @@ if (isset($_SESSION['user'])) { ?>
 
 </div>
 
+
+
 <!-- display replies -->
 
 <br>
@@ -128,7 +135,12 @@ if (mysqli_num_rows($result) > 0) {
 
 
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px; text-decoration: none;" >
-                    <label class=""> <? echo $row['post_content'] ?></label><br>
+                    <label class="">
+                        <?php
+                        $blobreply = $row['reply_content'];
+                        echo $blobreply;
+                        ?>
+                    </label><br><br>
                     <label class=""> <? echo $name ?> </label>
                     <label class = "w3-right" > <? echo $row['reply_date'] ?></label>
                     <br>
