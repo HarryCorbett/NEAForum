@@ -74,10 +74,9 @@ if (mysqli_num_rows($result) > 0) {
 </div>
 
 
-<!-- left here temporarily, working on it in create post: -->
 <br>
-<form action="upload.php">
-<label for="upload" class="w3-wide w3-left" style="letter-spacing: 2px;">Attachment ( doesn't currently work )</label><br>
+<form action="upload.php" method="post" enctype = "multipart/form-data">
+<label for="upload" class="w3-wide w3-left" style="letter-spacing: 2px;">Attachment</label><br>
 <input  type="file" name="file"><br>
 <button class="w3-btn w3-light-gray" type="submit" name="upload">Upload</button>
 </form>

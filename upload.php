@@ -12,14 +12,15 @@ if (isset($_POST['upload'])) {
     $fileTempName = $_FILES['file']['tmp_name'];
 
     /* check file size */
-    $fileSize = $_FILES['file']['Size'];
+    $fileSize = $_FILES['file']['size'];
 
     /* check for error */
-    $fileError = $_FILES['file']['Error'];
+    $fileError = $_FILES['file']['error'];
 
     /* check file type */
     $fileType = $_FILES['file']['type'];
 
+    echo $postid . "<br>";
     echo $fileName . "<br>";
     echo $fileSize . "<br>";
     echo $fileError . "<br>";
@@ -40,19 +41,21 @@ if (isset($_POST['upload'])) {
     if (in_array($fileActualExt, $allowed)) {
 
         /* checks there are no errors in uploading */
-        if (is_null($fileError)) {
+        if ($fileError === 0 ) {
             /* file no larger than n Kb */
             if ($fileSize < 500000) {
 
                 /*making a file for that post*/
-                mkdir("Uploads/" . $postid);
+                if(mkdir("Uploads/" . $postid)) {
+                    echo "created successfully";}
 
                 /* set to unique id for the file */
                 $fileNameNew = uniqid('', true) . "." . $fileActualExt;
                 $fileDestination = 'Uploads/' . $postid . '/' . $fileNameNew;
 
                 move_uploaded_file($fileTempName, $fileDestination);
-                header("location: index.php");
+
+                header("location: ");
 
             } else {
                 echo "The file is too large";
