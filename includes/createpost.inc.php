@@ -88,9 +88,6 @@ if(mysqli_query($conn, $sql)) {
             echo "You cannot upload files of this type";
         }
 
-
-
-
 } else {
     $_SESSION['postmessage'] = 'Post could not be created';
     header("location: ../createpost.php#posterror");

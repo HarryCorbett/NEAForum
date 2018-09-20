@@ -50,16 +50,16 @@ if (isset($_SESSION['user'])) {
                             echo $blobpost;
                         ?>
                     </label><br><br>
+                    <a href="Uploads/<? echo $postid ?>/<? echo $row['post_attachment'] ?>">Download attachment</a>
+                    <br><br>
+
                     <label > <? echo $name ?> </label>
                     <label class = "w3-right" > <? echo $row['post_date'] ?></label>
-                    <!-- <a href="Uploads/" download>Download attachment</a> -->
+
                 </div>
-
-
 </div>
 
 <br>
-
 
 <div class="container">
 
@@ -67,7 +67,6 @@ if (isset($_SESSION['user'])) {
 
         <br>
         <header style="letter-spacing: 4px;" class="w3-select w3-center"> Create a reply </header>
-
         <br>
 
 <?php
