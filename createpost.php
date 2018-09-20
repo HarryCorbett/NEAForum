@@ -39,7 +39,11 @@ if (isset($_SESSION['user'])) {
             <br>
 
             <label for="tags" class="w3-wide w3-left" style="letter-spacing: 2px;">Tags</label>
-            <input class="w3-select" type="text" placeholder="Tags" name="tags" >
+            <input class="w3-select" type="text" placeholder="Tags" name="tags" ><br>
+            <br>
+
+            <label for="upload" class="w3-wide w3-left" style="letter-spacing: 2px;">Attachment</label><br>
+            <input class="w3-select" type="file" name="file">
 
             <br><br>
             <input type="submit" value="create" name="create" class="w3-btn w3-light-grey w3-animate-opacity">

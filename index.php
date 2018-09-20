@@ -25,7 +25,7 @@ if (isset($_SESSION['user'])) {
 <!-- displaying posts -->
 <?php
 
-$sql = "SELECT post_id, post_title, post_date, post_user FROM posts";
+$sql = "SELECT post_id, post_title, post_date, post_user FROM posts ORDER BY post_date DESC";
 $result = mysqli_query($conn, $sql);
 
 
@@ -67,19 +67,13 @@ if (mysqli_num_rows($result) > 0) {
 
     }
 } else {
+
     echo "currently no posts";
 }
 ?>
 </table>
 </div>
 
-
-<br>
-<form action="upload.php" method="post" enctype = "multipart/form-data">
-<label for="upload" class="w3-wide w3-left" style="letter-spacing: 2px;">Attachment</label><br>
-<input  type="file" name="file"><br>
-<button class="w3-btn w3-light-gray" type="submit" name="upload">Upload</button>
-</form>
 
 <!--<div>
     <!-- Download files
