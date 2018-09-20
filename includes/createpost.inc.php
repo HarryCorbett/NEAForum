@@ -72,7 +72,11 @@ if(mysqli_query($conn, $sql)) {
 
                     move_uploaded_file($fileTempName, $fileDestination);
 
-                    header("location: ../");
+                    $sql3 = "UPDATE posts SET post_attachment = '$fileNameNew' where post_id = '$postid'";
+                    if(mysqli_query($conn,$sql3)){
+                        header("location: ../");
+                    }
+
 
                 } else {
                     echo "The file is too large";
