@@ -43,14 +43,15 @@ if (isset($_SESSION['user'])) {
                 ?>
 
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;">
-                    <label > <? echo $row['post_title'] ?></label><br><br>
+                    <label style="font-weight: bold;"> <? echo $row['post_title'] ?></label><br><br>
                     <label >
                         <?php
                             $blobpost = $row['post_content'];
                             echo $blobpost;
                         ?>
                     </label><br><br>
-                    <a href="Uploads/<? echo $postid ?>/<? echo $row['post_attachment'] ?>">Download attachment</a>
+                    <a href="Uploads/<? echo $postid ?>/<? echo $row['post_attachment'] ?>">Download attachment (<? echo $row['post_attachment'] ?>)</a><br>
+                    I need to find a way to get the file name it was uploaded with (probably store that before giving it unique id then fetch it again later)
                     <br><br>
 
                     <label > <? echo $name ?> </label>

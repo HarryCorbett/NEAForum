@@ -52,7 +52,7 @@ if(mysqli_query($conn, $sql)) {
         echo "File type: " . $fileActualExt . "<br>";
 
         /* setting allowed files */
-        $allowed = array("jpg", "jpeg", "png", "pdf");
+        $allowed = array("jpg", "jpeg", "png", "pdf", "txt");
 
         /* checks the file type is allowed */
         if (in_array($fileActualExt, $allowed)) {
@@ -60,7 +60,7 @@ if(mysqli_query($conn, $sql)) {
             /* checks there are no errors in uploading */
             if ($fileError === 0 ) {
                 /* file no larger than n Kb */
-                if ($fileSize < 500000) {
+                if ($fileSize < 50000) {
 
                     /*making a file for that post*/
                     if(mkdir("../Uploads/" . $postid)) {
