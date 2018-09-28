@@ -74,12 +74,5 @@ if (mysqli_num_rows($result) > 0) {
 </table>
 </div>
 
-
-<!--<div>
-    <!-- Download files
-    <a href="Uploads/1/TestFile.pdf" download>Download here</a>
-
-</div>
--->
 </body>
 

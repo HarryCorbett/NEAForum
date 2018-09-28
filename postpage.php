@@ -43,31 +43,35 @@ if (isset($_SESSION['user'])) {
                 ?>
 
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px;">
+
+                    <label > <? echo $name ?> </label>
+                    <br>
+                    <label class="w3-tiny"> Posted: <? echo $row['post_date'] ?></label>
+                    <br><br>
+
+
                     <label style="font-weight: bold;"> <? echo $row['post_title'] ?></label><br><br>
                     <label >
                         <?php
                             $blobpost = $row['post_content'];
                             echo $blobpost;
                         ?>
-                    </label><br><br>
-                    <a href="Uploads/<? echo $postid ?>/<? echo $row['post_attachment'] ?>">Download attachment (<? echo $row['post_attachment'] ?>)</a><br>
-                    I need to find a way to get the file name it was uploaded with (probably store that before giving it unique id then fetch it again later)
-                    <br><br>
+                    </label><br><br><br>
+                    <label> Attachment:</label><br>
+                    <a href="Uploads/<? echo $postid ?>/<? echo $row['post_attachment'] ?>"> <? echo $row['post_attachment_name'] ?></a><br>
+                    <br>
 
-                    <label > <? echo $name ?> </label>
-                    <label class = "w3-right" > <? echo $row['post_date'] ?></label>
 
                 </div>
 </div>
 
-<br>
 
 <div class="container">
 
     <form class="form " style="margin-left:25%; margin-right:25%;" action="includes/reply.php" method="post" enctype="multipart/form-data" autocomplete="off">
 
         <br>
-        <header style="letter-spacing: 4px;" class="w3-select w3-center"> Create a reply </header>
+        <header style="letter-spacing: 4px;" class="w3-select w3-center w3-large"> Create a reply </header>
         <br>
 
 <?php
@@ -100,13 +104,13 @@ if (isset($_SESSION['user'])) { ?>
 <!-- display replies -->
 
 <br>
-<header style="letter-spacing: 4px;" class="w3-select w3-center"> Replies </header>
+<header style="letter-spacing: 4px;" class="w3-select w3-center w3-large"> Replies </header>
 
 <br>
 
 <?php
 
-$sql = "SELECT reply_id, reply_content, reply_date, reply_post, reply_by FROM replies";
+$sql = "SELECT * FROM replies";
 $result = mysqli_query($conn, $sql);
 
 
@@ -135,17 +139,30 @@ if (mysqli_num_rows($result) > 0) {
 
 
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px; text-decoration: none;" >
-                    <label class="">
+
+                    <label class=""><? echo $name ?> </label>
+                    <br>
+                    <label class = "w3-tiny" > Replied at:<? echo $row['reply_date'] ?></label>
+                    <br><br>
+
+                    <label>
                         <?php
                         $blobreply = $row['reply_content'];
                         echo $blobreply;
                         ?>
                     </label><br><br>
-                    <label class=""> <? echo $name ?> </label>
-                    <label class = "w3-right" > <? echo $row['reply_date'] ?></label>
+
+                    <div class="w3-center">
+                        <a class="w3-small"  id = "upvote" href="includes/replyupvote.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid; ?>">Upvote</a>
+                        <label> Score: <?php echo $row['upvotes']; ?></label>
+                        <a class="w3-small" id = "downvote" href="" >Downvote</a>
+                    </div>
+
+
                     <br>
                 </div>
                 <br><br>
+
 
             <?
 
