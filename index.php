@@ -1,12 +1,8 @@
-<head>
-    <link rel="Stylesheet" type="text/css" href="css/app.css"/>
-</head>
-
-<body>
 
 <?php
 
 session_start();
+include 'includes/header.php';
 include 'includes/connect.php';
 
 if (isset($_SESSION['user'])) {
@@ -16,6 +12,7 @@ if (isset($_SESSION['user'])) {
 }
 ?>
 
+<body>
 
 <title>Education Forum</title>
 

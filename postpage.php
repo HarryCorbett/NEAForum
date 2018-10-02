@@ -1,11 +1,8 @@
-<head>
-    <link rel="Stylesheet" type="text/css" href="css/app.css"/>
-</head>
-
 <?php
 
 session_start();
 include 'includes/connect.php';
+include 'includes/header.php';
 
 if (isset($_SESSION['user'])) {
     include 'navbar_loggedin.php';
@@ -110,9 +107,9 @@ if (isset($_SESSION['user'])) { ?>
 
 <?php
 
-$sql = "SELECT * FROM replies";
+$sql = "SELECT replies.reply_id, replies.reply_by, replies.reply_date, replies.reply_content,  SUM(votes.value) AS score
+        FROM replies LEFT JOIN votes ON replies.reply_id = votes.reply_id GROUP BY reply_id";
 $result = mysqli_query($conn, $sql);
-
 
 if (mysqli_num_rows($result) > 0) {
 
@@ -152,12 +149,13 @@ if (mysqli_num_rows($result) > 0) {
                         ?>
                     </label><br><br>
 
+                    <?php if ($row['reply_by'] != $_SESSION['user']) {  ?>
                     <div class="w3-center">
-                        <a class="w3-small"  id = "upvote" href="includes/replyupvote.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid; ?>">Upvote</a>
-                        <label> Score: <?php echo $row['upvotes']; ?></label>
-                        <a class="w3-small" id = "downvote" href="" >Downvote</a>
+                        <a class="w3-small , fas fa-chevron-up" style = "text-decoration: none;"  id = "upvote" href="includes/replyupvote.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid; ?>"></a>
+                        <label> Score: <?php echo $row['score']; ?></label>
+                        <a class="w3-small , fas fa-chevron-down" style = "text-decoration: none;"  id = "downvote" href=""></a>
                     </div>
-
+                    <? } ?>
 
                     <br>
                 </div>

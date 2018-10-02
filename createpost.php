@@ -1,11 +1,8 @@
-<head>
-    <link rel="Stylesheet" type="text/css" href="css/app.css"/>
-</head>
-
-<body>
-
 <?php
 session_start();
+
+include 'includes/header.php';
+
 if (isset($_SESSION['user'])) {
     include 'navbar_loggedin.php';
 } else {
