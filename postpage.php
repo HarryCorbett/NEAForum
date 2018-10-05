@@ -46,7 +46,6 @@ if (isset($_SESSION['user'])) {
                     <label class="w3-tiny"> Posted: <? echo $row['post_date'] ?></label>
                     <br><br>
 
-
                     <label style="font-weight: bold;"> <? echo $row['post_title'] ?></label><br><br>
                     <label >
                         <?php
@@ -149,15 +148,35 @@ if (mysqli_num_rows($result) > 0) {
                         ?>
                     </label><br><br>
 
-                    <?php if ($row['reply_by'] != $_SESSION['user']) {  ?>
-                    <div class="w3-center">
-                        <a class="w3-small , fas fa-chevron-up" style = "text-decoration: none;"  id = "upvote" href="includes/replyupvote.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid; ?>"></a>
-                        <label> Score: <?php echo $row['score']; ?></label>
-                        <a class="w3-small , fas fa-chevron-down" style = "text-decoration: none;"  id = "downvote" href=""></a>
-                    </div>
-                    <? } ?>
+                    <?php
+                    if (isset($_SESSION['user'])){
 
-                    <br>
+                    if ($row['reply_by'] != $_SESSION['user']) {  ?>
+
+                    <div class="w3-center">
+                        <button onclick="upvotefunction()" class="w3-small , fas fa-chevron-up" style = " background: transparent; border: none !important; outline:none; cursor: pointer;"  id = "upvote" ></button>
+                        <label> Score: <?php echo $row['score']; ?></label>
+                        <a class="w3-small , fas fa-chevron-down" style = "text-decoration: none;"  id = "downvote"></a>
+                    </div>
+
+                        <script>
+
+                            function upvotefunction() {
+
+                                    window.location = "includes/replyupvote.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>";
+
+                            }
+                        </script>
+
+
+                    <? }
+                    }else{
+                        ?>
+                        <div class="w3-center">
+                        <a class="w3-small" href="..#login" > Please login to vote on replies </a>
+                        </div>
+                            <?}?>
+
                 </div>
                 <br><br>
 
@@ -169,4 +188,3 @@ if (mysqli_num_rows($result) > 0) {
             ?> <label style="letter-spacing: 2px; text-align: center;" class="w3-center"> There are currently no replies to this post, why not create one?</label> <br><br><?
         }
         ?>
-
