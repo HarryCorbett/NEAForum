@@ -193,20 +193,27 @@ if (mysqli_num_rows($result) > 0) {
 
                             function upvotefunction() {
 
-                                    if (<? echo $value ?> = 0){
-                                    window.location = "includes/voteup.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>";
+                                    if (<? echo $value ?> == 0){
+                                    window.location = "includes/voteadd.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>&uord=<? echo '1' ?>";
 
-                                    }else if (<? echo $value ?> = 1){
-                                        window.location = ""
+                                    }else if (<? echo $value ?> == 1){
+                                        window.location = "includes/voteremove.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
 
-                                    }else if (<? echo $value ?> = -1) {
-                                        window.location = ""
+                                    }else if (<? echo $value ?> == -1) {
+                                        window.location = "includes/votechange.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
                                     }
                             }
 
                             function downvotefunction() {
-                                if (<? echo $value ?> = 0) {
-                                    window.location = " " ;
+
+                                if (<? echo $value ?> == 0){
+                                    window.location = "includes/voteadd.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>&uord=<? echo '-1' ?> ";
+
+                                }else if (<? echo $value ?> == 1){
+                                    window.location = "includes/votechange.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
+
+                                }else if (<? echo $value ?> == -1) {
+                                    window.location = "includes/voteremove.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
                                 }
                             }
 
