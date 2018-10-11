@@ -109,6 +109,7 @@ if (isset($_SESSION['user'])) { ?>
 $sql = "SELECT replies.reply_id, replies.reply_by, replies.reply_date, replies.reply_content,  SUM(votes.value) AS score
         FROM replies LEFT JOIN votes ON replies.reply_id = votes.reply_id GROUP BY reply_id";
 $result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
 if (mysqli_num_rows($result) > 0) {
 
@@ -133,7 +134,6 @@ if (mysqli_num_rows($result) > 0) {
 
             ?>
 
-
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px; text-decoration: none;" >
 
                     <label class=""><? echo $name ?> </label>
@@ -151,21 +151,65 @@ if (mysqli_num_rows($result) > 0) {
                     <?php
                     if (isset($_SESSION['user'])){
 
+                        $sessionuser = $_SESSION['user'];
+                        $replyid = $row['reply_id'];
+
+                        $sql3  = "SELECT value from votes where user_id = $sessionuser and reply_id = $replyid";
+                        $result3 = mysqli_query($conn,$sql3);
+
+                        $rowcount = mysqli_num_rows($result3);
+
+
+
+                        if ($rowcount != 0){
+                            $row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC);
+                            $value = $row3['value'];
+                        }else{
+                            $value = 0;
+                        }
+
+                        echo "value = $value" ;
+
+                        if ($value == 0){
+                                $upcol = "black";
+                                $docol = "black";
+                        }elseif ($value == 1){
+                                $upcol = "#00cdfe";
+                                $docol = "black";
+                        }elseif ($value == -1){
+                                $upcol = "black";
+                                $docol = "#00cdfe";
+                        }
+
                     if ($row['reply_by'] != $_SESSION['user']) {  ?>
 
                     <div class="w3-center">
-                        <button onclick="upvotefunction()" class="w3-small , fas fa-chevron-up" style = " background: transparent; border: none !important; outline:none; cursor: pointer;"  id = "upvote" ></button>
-                        <label> Score: <?php echo $row['score']; ?></label>
-                        <a class="w3-small , fas fa-chevron-down" style = "text-decoration: none;"  id = "downvote"></a>
+                        <button onclick="upvotefunction()" class="w3-small , fas fa-chevron-up" style = "color:<? echo $upcol ?>; background: transparent; border: none !important; outline:none; cursor: pointer;"  id = "upvote" ></button>
+                        <label> Score: <?php echo 0 + $row['score']; ?></label>
+                        <button onclick="downvotefunction()" class="w3-small , fas fa-chevron-down" style = "color:<? echo $docol ?>; background: transparent; border: none !important; outline:none; cursor: pointer;"  id = "downvote"></button>
                     </div>
 
                         <script>
 
                             function upvotefunction() {
 
-                                    window.location = "includes/replyupvote.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>";
+                                    if (<? echo $value ?> = 0){
+                                    window.location = "includes/voteup.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>";
 
+                                    }else if (<? echo $value ?> = 1){
+                                        window.location = ""
+
+                                    }else if (<? echo $value ?> = -1) {
+                                        window.location = ""
+                                    }
                             }
+
+                            function downvotefunction() {
+                                if (<? echo $value ?> = 0) {
+                                    window.location = " " ;
+                                }
+                            }
+
                         </script>
 
 
