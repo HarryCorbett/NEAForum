@@ -168,7 +168,6 @@ if (mysqli_num_rows($result) > 0) {
                             $value = 0;
                         }
 
-                        echo "value = $value" ;
 
                         if ($value == 0){
                                 $upcol = "black";
@@ -184,40 +183,10 @@ if (mysqli_num_rows($result) > 0) {
                     if ($row['reply_by'] != $_SESSION['user']) {  ?>
 
                     <div class="w3-center">
-                        <button onclick="upvotefunction()" class="w3-small , fas fa-chevron-up" style = "color:<? echo $upcol ?>; background: transparent; border: none !important; outline:none; cursor: pointer;"  id = "upvote" ></button>
+                        <a href="includes/choosefunction.php?upordown=1&value=<? echo $value ?>&replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>" class="w3-small , fas fa-chevron-up" style = "color:<? echo $upcol ?>; background: transparent; border: none !important; outline:none; cursor: pointer; text-decoration: none;"  id = "upvote" ></a>
                         <label> Score: <?php echo 0 + $row['score']; ?></label>
-                        <button onclick="downvotefunction()" class="w3-small , fas fa-chevron-down" style = "color:<? echo $docol ?>; background: transparent; border: none !important; outline:none; cursor: pointer;"  id = "downvote"></button>
+                        <a href="includes/choosefunction.php?upordown=-1&value=<? echo $value ?>&replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>" class="w3-small , fas fa-chevron-down" style = "color:<? echo $docol ?>; background: transparent; border: none !important; outline:none; cursor: pointer; text-decoration: none;"  id = "downvote"></a>
                     </div>
-
-                        <script>
-
-                            function upvotefunction() {
-
-                                    if (<? echo $value ?> == 0){
-                                    window.location = "includes/voteadd.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>&uord=<? echo '1' ?>";
-
-                                    }else if (<? echo $value ?> == 1){
-                                        window.location = "includes/voteremove.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
-
-                                    }else if (<? echo $value ?> == -1) {
-                                        window.location = "includes/votechange.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
-                                    }
-                            }
-
-                            function downvotefunction() {
-
-                                if (<? echo $value ?> == 0){
-                                    window.location = "includes/voteadd.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>&uord=<? echo '-1' ?> ";
-
-                                }else if (<? echo $value ?> == 1){
-                                    window.location = "includes/votechange.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
-
-                                }else if (<? echo $value ?> == -1) {
-                                    window.location = "includes/voteremove.php?replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>$value=<? echo $value ?>"
-                                }
-                            }
-
-                        </script>
 
 
                     <? }
