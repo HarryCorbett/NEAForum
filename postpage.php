@@ -180,19 +180,24 @@ if (mysqli_num_rows($result) > 0) {
                                 $docol = "#00cdfe";
                         }
 
-                    if ($row['reply_by'] != $_SESSION['user']) {  ?>
+                        if ($row['reply_by'] != $_SESSION['user']) {  ?>
 
-                    <div class="w3-center">
-                        <a href="includes/choosefunction.php?upordown=1&value=<? echo $value ?>&replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>" class="w3-small , fas fa-chevron-up" style = "color:<? echo $upcol ?>; background: transparent; border: none !important; outline:none; cursor: pointer; text-decoration: none;"  id = "upvote" ></a>
-                        <label> Score: <?php echo 0 + $row['score']; ?></label>
-                        <a href="includes/choosefunction.php?upordown=-1&value=<? echo $value ?>&replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>" class="w3-small , fas fa-chevron-down" style = "color:<? echo $docol ?>; background: transparent; border: none !important; outline:none; cursor: pointer; text-decoration: none;"  id = "downvote"></a>
-                    </div>
+                        <div class="w3-center">
+                            <a href="includes/choosefunction.php?upordown=1&value=<? echo $value ?>&replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>" class="w3-small , fas fa-chevron-up" style = "color:<? echo $upcol ?>; background: transparent; border: none !important; outline:none; cursor: pointer; text-decoration: none;"  id = "upvote" ></a>
+                            <label> Score: <?php echo 0 + $row['score']; ?></label>
+                            <a href="includes/choosefunction.php?upordown=-1&value=<? echo $value ?>&replyid=<? echo $row['reply_id']; ?>&postid=<? echo $postid ?>" class="w3-small , fas fa-chevron-down" style = "color:<? echo $docol ?>; background: transparent; border: none !important; outline:none; cursor: pointer; text-decoration: none;"  id = "downvote"></a>
+                        </div>
 
 
-                    <? }
+                    <? }else{ ?>
+                            <div class="w3-center">
+                        <label> Score: <?php echo 0 + $row['score']; ?></label> <br>
+                        </div>
+                    <?  }
                     }else{
                         ?>
                         <div class="w3-center">
+                        <label> Score: <?php echo 0 + $row['score']; ?></label> <br>
                         <a class="w3-small" href="..#login" > Please login to vote on replies </a>
                         </div>
                             <?}?>
