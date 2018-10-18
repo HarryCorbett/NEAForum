@@ -107,7 +107,7 @@ if (isset($_SESSION['user'])) { ?>
 <?php
 
 $sql = "SELECT replies.reply_id, replies.reply_by, replies.reply_date, replies.reply_content,  SUM(votes.value) AS score
-        FROM replies LEFT JOIN votes ON replies.reply_id = votes.reply_id GROUP BY reply_id";
+        FROM replies LEFT JOIN votes ON replies.reply_id = votes.reply_id WHERE replies.reply_post = $postid GROUP BY reply_id";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
@@ -210,6 +210,10 @@ if (mysqli_num_rows($result) > 0) {
 
         }
         } else {
-            ?> <label style="letter-spacing: 2px; text-align: center;" class="w3-center"> There are currently no replies to this post, why not create one?</label> <br><br><?
+            ?>
+            <div class="w3-center">
+            <label style="letter-spacing: 2px; text-align: center;" class="w3-center"> There are currently no replies to this post, why not create one?</label> <br><br>
+            </div>
+            <?
         }
         ?>
