@@ -4,26 +4,29 @@ session_start();
 include 'header.php';
 include 'connect.php';
 
-if (isset($_GET['replyid'])) {
+    $replyid = $_GET['replyid'];
+    $postid = $_GET['postid'];
+    $value = $_GET['value'];
 
-$replyid = $_GET['replyid'];}
-$postid = $_GET['postid'];
-$value = $_GET['value'];
+    $currentuser = $_SESSION['user'];
 
-$currentuser = $_SESSION['user'];
 
-if ($value = 1){
+if (isset($replyid)) {
 
-    $sql = "UPDATE votes SET value = -1 WHERE reply_id = $replyid AND user_id = $currentuser";
+    if ($value == 1) {
 
-}elseif ($value = -1){
+        $sql = "UPDATE votes SET value = -1 WHERE reply_id = '$replyid' AND user_id = '$currentuser'";
 
-    $sql = "UPDATE votes SET value = 1 WHERE reply_id = $replyid AND user_id = $currentuser";
 
-}
+    } elseif ($value == -1) {
 
-if (mysqli_query($conn,$sql)) {
-    header("location: ../postpage.php?postid=$postid");
-}else{
-    echo "an error has occurred";
+        $sql = "UPDATE votes SET value = 1 WHERE reply_id = '$replyid' AND user_id = '$currentuser'";
+
+
+    }
+    if (mysqli_query($conn, $sql)) {
+        header("location: ../postpage.php?postid=$postid");
+    } else {
+        echo "an error has occurred";
+    }
 }
