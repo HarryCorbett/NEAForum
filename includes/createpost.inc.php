@@ -7,6 +7,7 @@ $_SESSION['postmessage'] = '';
 
 $title = mysqli_real_escape_string($conn, $_POST['title']);
 $content = mysqli_real_escape_string($conn, $_POST['content']);
+$tags = mysqli_real_escape_string($conn, $_POST['tags']);
 $user = $_SESSION['user'];
 
 $sql = "INSERT INTO posts (post_title,post_content,post_date,post_user)
@@ -19,7 +20,10 @@ if(mysqli_query($conn, $sql)) {
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $postid = $row['post_id'];
 
-    echo $postid;
+    echo $postid; ?> <br> <?
+    echo $_FILES['file']['name'];
+
+    if($_FILES['file']['name'] !== "" ) {
 
         $file = $_FILES['file'];
 
@@ -58,13 +62,14 @@ if(mysqli_query($conn, $sql)) {
         if (in_array($fileActualExt, $allowed)) {
 
             /* checks there are no errors in uploading */
-            if ($fileError === 0 ) {
+            if ($fileError === 0) {
                 /* file no larger than n Kb */
                 if ($fileSize < 50000) {
 
                     /*making a file for that post*/
-                    if(mkdir("../Uploads/" . $postid)) {
-                        echo "created successfully";}
+                    if (mkdir("../Uploads/" . $postid)) {
+                        echo "created successfully";
+                    }
 
                     /* set to unique id for the file */
                     $fileNameNew = uniqid('', true) . "." . $fileActualExt;
@@ -73,10 +78,9 @@ if(mysqli_query($conn, $sql)) {
                     move_uploaded_file($fileTempName, $fileDestination);
 
                     $sql3 = "UPDATE posts SET post_attachment = '$fileNameNew', post_attachment_name = '$fileName' where post_id = '$postid'";
-                    if(mysqli_query($conn,$sql3)){
+                    if (mysqli_query($conn, $sql3)) {
                         header("location: ../");
                     }
-
 
                 } else {
                     echo "The file is too large";
@@ -87,7 +91,8 @@ if(mysqli_query($conn, $sql)) {
         } else {
             echo "You cannot upload files of this type";
         }
-
+    }
+    header("location: ../");
 } else {
     $_SESSION['postmessage'] = 'Post could not be created';
     header("location: ../createpost.php#posterror");

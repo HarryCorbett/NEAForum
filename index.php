@@ -16,7 +16,10 @@ if (isset($_SESSION['user'])) {
 
 <title>Education Forum</title>
 
-<br>
+<h3 class = "w3-center " style="margin-top: 5%;  font-family: 'Times New Roman', Times, serif; letter-spacing: 2px;">
+    Recent posts
+</h3>
+
 
 
 <!-- displaying posts -->

@@ -35,7 +35,8 @@ if (isset($_SESSION['user'])) {
 
             <br>
 
-            <label for="tags" class="w3-wide w3-left" style="letter-spacing: 2px;">Tags</label>
+            <label for="tags" class="w3-wide w3-left" style="letter-spacing: 2px;">Tags</label><br>
+            <label for="tags" class="w3-wide w3-left w3-tiny" style="letter-spacing: 2px;">Please enter tags without any symbols and with a comma between each tag</label>
             <input class="w3-select" type="text" placeholder="Tags" name="tags" ><br>
             <br>
 
