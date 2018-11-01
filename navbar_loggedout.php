@@ -162,19 +162,19 @@
     // Get the <span> element that closes the modal
     const loginspan = document.getElementsByClassName("closelogin")[0];
 
-    // When the user clicks the button, open the modal
+    // open the modal
     loginbtn.onclick = function() {
         <?php $_SESSION['loginmessage'] = NULL ?>
         loginmodal.style.display = "block";
     }
 
-    // When the user clicks on <span> (x), close the modal
+    // When the user clicks on(x), close the modal
     loginspan.onclick = function() {
         loginmodal.style.display = "none";
 
     };
 
-    // When the user clicks anywhere outside of the modal, close it
+    // When the user clicks outside, close it
     window.onclick = function(event) {
         if (event.target === loginmodal) {
             loginmodal.style.display = "none";
@@ -185,7 +185,7 @@
         }
     }
 
-    if(window.location.href.indexOf('#login') != -1) {
+    if(window.location.href.indexOf('#login') !== -1) {
         loginmodal.style.display = "block";
     }
 

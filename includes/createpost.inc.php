@@ -7,13 +7,51 @@ $_SESSION['postmessage'] = '';
 
 $title = mysqli_real_escape_string($conn, $_POST['title']);
 $content = mysqli_real_escape_string($conn, $_POST['content']);
-$tags = mysqli_real_escape_string($conn, $_POST['tags']);
+$tagsinput = mysqli_real_escape_string($conn, $_POST['tags']);
 $user = $_SESSION['user'];
+
 
 $sql = "INSERT INTO posts (post_title,post_content,post_date,post_user)
         values ('$title','$content',NOW(),'$user')";
 
 if(mysqli_query($conn, $sql)) {
+
+    if(isset($tagsinput)){
+
+        $sqlpostid = "SELECT post_id FROM posts ORDER BY post_id DESC LIMIT 1";
+        $newpostidrow =  mysqli_query($conn , $sqlpostid);
+        $row = mysqli_fetch_array($newpostidrow, MYSQLI_ASSOC);
+        $newpostid = $row['post_id'];
+
+        // separating tags into individual string
+
+        $tagstripcommas = explode(",", $tagsinput);
+
+        foreach($tagstripcommas as $value){
+
+            $value = str_replace(" ","",$value);
+
+            $result = mysqli_query($conn, "SELECT * FROM tags WHERE tag_name = '$value'");
+
+                if(mysqli_num_rows($result) == 0) {
+
+                    mysqli_query($conn,"INSERT INTO tags (tag_name) VALUES ('$value')" );
+
+                }
+
+            $newtagtidrow =  mysqli_query($conn , "SELECT tag_id FROM tags ORDER BY tag_id DESC LIMIT 1");
+            $row2 = mysqli_fetch_array($newtagtidrow, MYSQLI_ASSOC);
+            $newtagid = $row2['tag_id'];
+
+            echo $newpostid;
+            echo $newtagid;
+
+            mysqli_query($conn, "INSERT INTO posttags VALUES ('$newtagid','$newpostid')");
+
+        }
+
+
+    }
 
     $sql2 = "SELECT post_id from posts where post_date = (SELECT max(post_date) from posts) ";
     $result = mysqli_query($conn,$sql2);
@@ -21,7 +59,6 @@ if(mysqli_query($conn, $sql)) {
     $postid = $row['post_id'];
 
     echo $postid; ?> <br> <?
-    echo $_FILES['file']['name'];
 
     if($_FILES['file']['name'] !== "" ) {
 
