@@ -134,7 +134,7 @@ if (isset($_SESSION['user'])) { ?>
 <?php
 
 $sql = "SELECT replies.reply_id, replies.reply_by, replies.reply_date, replies.reply_content,  SUM(votes.value) AS score
-        FROM replies LEFT JOIN votes ON replies.reply_id = votes.reply_id WHERE replies.reply_post = $postid GROUP BY reply_id";
+        FROM replies LEFT JOIN votes ON replies.reply_id = votes.reply_id WHERE replies.reply_post = $postid GROUP BY reply_id ORDER BY SUM(votes.value) DESC";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
@@ -156,14 +156,22 @@ if (mysqli_num_rows($result) > 0) {
             $sql2 = "SELECT DISTINCT name FROM users WHERE id = '$reply_by' ";
             $result2 = mysqli_query($conn, $sql2);
             $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
-            $name = $row2['name']
+            $name = $row2['name'];
 
+            $repquery = "SELECT SUM(value) AS rep FROM votes WHERE votes.user_id = '$reply_by'";
+            $fetchrep = mysqli_query($conn, $repquery);
+            $reprow = mysqli_fetch_array($fetchrep, MYSQLI_ASSOC);
+            $rep = $reprow['rep'];
+
+            if (empty($rep)){
+                $rep = '0';
+            }
 
             ?>
 
                 <div style = "letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0px; text-decoration: none;" >
 
-                    <label class=""><? echo $name ?> </label>
+                    <label class=""><? echo $name ?> </label><label class="w3-small">reputation: <? echo $rep ?></label>
                     <br>
                     <label class = "w3-tiny" > Replied at:<? echo $row['reply_date'] ?></label>
                     <br><br>
