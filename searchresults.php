@@ -75,8 +75,7 @@ $questionsearch = trim($questionsearch,"' ', ''" );
             }}
     }else {
 
-                ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found
-                    no results</label>  <?
+                ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label>  <?
             }
         ?>
 

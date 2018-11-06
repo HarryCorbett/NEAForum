@@ -13,7 +13,7 @@ if (isset($_SESSION['user'])) {
 ?>
 
     <!-- display the post -->
-    <div style="margin-left:25%; margin-right:25%; margin-top: 5%; margin-bottom: 5%;">
+    <div style="margin-left:25%; margin-right:25%; margin-top: 5%; margin-bottom: 5%;" >
         <table>
 
                     <?
@@ -25,7 +25,6 @@ if (isset($_SESSION['user'])) {
                 $sql = "SELECT * FROM posts WHERE post_id = '$postid' ";
                 $result = mysqli_query($conn, $sql);
                 $row = mysqli_fetch_assoc($result);
-                $blob = $row['post_content'];
 
 
                 // finding username for user id of poster
@@ -55,7 +54,7 @@ if (isset($_SESSION['user'])) {
                     </label><br><br>
                     <label> Attachment:</label><br>
                     <a href="Uploads/<? echo $postid ?>/<? echo $row['post_attachment'] ?>"> <? echo $row['post_attachment_name'] ?></a><br>
-                    <br>
+
 
                     <label>Tags:</label><br>
                     <?php
@@ -73,7 +72,7 @@ if (isset($_SESSION['user'])) {
                             $tagarray = mysqli_fetch_array($tagquery,MYSQLI_ASSOC);
                             $tag = $tagarray['tag_name'];
 
-                            echo $tag . " ";
+                            echo '#' . $tag . " ";
 
                         }
                     }else{
@@ -82,9 +81,16 @@ if (isset($_SESSION['user'])) {
 
 
 
+                    if ($post_user == $_SESSION['user']){
                     ?>
 
 
+                        <a class="fas fa-trash-alt fa-1.5x w3-right w3-text-grey" href="includes/deletepost.php?postid=<? echo $postid ?>" ></a>
+                        <a class="fas fa-edit fa-1.5x w3-right w3-text-grey"  href="editpost.php?postid=<? echo $postid ?>"></a>
+
+                    <br>
+
+                    <? } ?>
                 </div>
 </div>
 
@@ -226,8 +232,9 @@ if (mysqli_num_rows($result) > 0) {
 
                     <? }else{ ?>
                             <div class="w3-center">
-                        <label> Score: <?php echo 0 + $row['score']; ?></label> <br>
-                        </div>
+                                <label> Score: <?php echo 0 + $row['score']; ?></label>
+                                <a class="fas fa-trash-alt w3-right w3-small w3-text-grey"  href="includes/deletereply.php?replyid=<? echo $replyid ?>&postid=<? echo $postid ?>" ></a>
+                            </div>
                     <?  }
                     }else{
                         ?>
