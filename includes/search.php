@@ -14,9 +14,11 @@ if (($pos = strpos($search,"#")) !== FALSE){
 }
 
 $removechar = str_replace(array('@','#'),"",$search);
-$question = str_replace(array($tagsearch,$usersearch),"",$removechar);
+$questionsearch = str_replace(array($tagsearch,$usersearch),"",$removechar);
 
 echo $usersearch; ?><br><?
 echo $tagsearch;  ?><br><?
-echo $question;
+echo $questionsearch;
+
+header("location: ../searchresults.php?usersearch=$usersearch&tagsearch=$tagsearch&questionsearch=$questionsearch");
 

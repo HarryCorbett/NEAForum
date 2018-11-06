@@ -31,6 +31,7 @@ $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
 
+
     ?>
 
 <div style="margin-left:25%; margin-right:25%; margin-top: 5%; margin-bottom: 5%;">
@@ -47,7 +48,7 @@ if (mysqli_num_rows($result) > 0) {
             $sql2 = "SELECT DISTINCT name FROM users WHERE id = '$post_user' ";
             $result2 = mysqli_query($conn, $sql2);
             $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
-            $name = $row2['name']
+            $name = $row2['name'];
 
 
             ?>

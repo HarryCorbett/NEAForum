@@ -103,7 +103,7 @@
 <!------------------------------------------------>
 
 
-<div class="w3-bar w3-wight w3-top topnav" style="letter-spacing:4px; border-bottom: 1px solid black;">
+<div class="w3-bar w3-wight w3-top topnav w3-white" style="letter-spacing:4px; border-bottom: 1px solid black;">
     <a href="../" class="w3-bar-item w3-button">Home</a>
 
     <div class="search-container">
@@ -218,7 +218,8 @@
                 <label for="email" class="w3-wide w3-left" style="letter-spacing: 2px;">Email</label>
                 <input class="w3-select" type="text" placeholder="Enter Email" name="email" required><br>
 
-                <label for="username" class="w3-wide w3-left" style="letter-spacing: 2px;">Username</label>
+                <label for="username" class="w3-wide w3-left" style="letter-spacing: 2px;">Username</label><br>
+                <label class="w3-tiny" style="letter-spacing: 2px;">Spaces in your username will be replaced with underscores</label>
                 <input class="w3-select" type="text" placeholder="Enter Username" name="username" required><br>
 
                 <label for="psw" class="w3-wide w3-left" style="letter-spacing: 2px;">Password</label>
@@ -256,9 +257,10 @@
         createmodal.style.display = "none";
     }
 
-    if(window.location.href.indexOf('#createerror') != -1) {
+    if(window.location.href.indexOf('#createerror') !== -1) {
         createmodal.style.display = "block";
     }
+
 
 </script>
 </html>

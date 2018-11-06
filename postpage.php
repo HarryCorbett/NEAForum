@@ -52,10 +52,37 @@ if (isset($_SESSION['user'])) {
                             $blobpost = $row['post_content'];
                             echo $blobpost;
                         ?>
-                    </label><br><br><br>
+                    </label><br><br>
                     <label> Attachment:</label><br>
                     <a href="Uploads/<? echo $postid ?>/<? echo $row['post_attachment'] ?>"> <? echo $row['post_attachment_name'] ?></a><br>
                     <br>
+
+                    <label>Tags:</label><br>
+                    <?php
+                    $tagidarray = array();
+                    //fetch tags
+                    $tagidsquery = mysqli_query($conn, "SELECT tag_id FROM posttags WHERE posttags.post_id = $postid");
+                    while($row = mysqli_fetch_array($tagidsquery)){
+                        $tagidarray[] = $row['tag_id'];
+                    }
+
+                    if(!empty($tagidarray)){
+                        foreach ($tagidarray as $tagid){
+
+                            $tagquery = mysqli_query($conn, "SELECT DISTINCT tag_name FROM tags where tag_id = $tagid");
+                            $tagarray = mysqli_fetch_array($tagquery,MYSQLI_ASSOC);
+                            $tag = $tagarray['tag_name'];
+
+                            echo $tag . " ";
+
+                        }
+                    }else{
+                        echo 'This post has no tags';
+                    }
+
+
+
+                    ?>
 
 
                 </div>
