@@ -12,33 +12,35 @@ if($_POST['password'] == $_POST['confirm_password']) {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // hash passwords for security
 
-    //if (isvalid($email) == false ) {
-    //    $_SESSION['createmessage'] = 'Invalid email address format';
-    //    header("location: ../#createerror");
-    //}
+    $regex = "/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/";
+        if(preg_match( $regex  , strtolower($email))){
 
-    //function isvalid($email){
-    //    return filter_var($email, FILTER_VALIDATE_EMAIL)
-    //        && preg_match('/@.+\./', $email);
-    //}
+            $username = trim($username,"' ', ''" );
+            $username = str_replace(" ","_",$username);
 
-    $username = trim($username,"' ', ''" );
-    $username = str_replace(" ","_",$username);
+            $_SESSION['username'] = $username;
 
-    $_SESSION['username'] = $username;
-
-    $sql = "INSERT INTO users (email, name, password, date, rating)
-            VALUES ('$email', '$username', '$password', NOW(), 0)";
+            $sql = "INSERT INTO users (email, name, password, date, rating)
+                VALUES ('$email', '$username', '$password', NOW(), 0)";
 
 
-    if(mysqli_query($conn, $sql)) {
-        header("Location: .././");
+            if(mysqli_query($conn, $sql)) {
+                header("Location: .././");
+            } else {
+                $_SESSION['createmessage'] = 'User could not be created';
+                header("location: ../#createerror");
+            }
+
+
+        }else{
+            $_SESSION['createmessage'] = "Email format invalid";
+            header("location: ../#createerror");
+        }
     } else {
-        $_SESSION['createmessage'] = 'User could not be created';
+        $_SESSION['createmessage'] = 'Passwords do not match';
         header("location: ../#createerror");
     }
-} else {
-    $_SESSION['createmessage'] = 'Passwords do not match';
-    header("location: ../#createerror");
-}
+
+
+
 

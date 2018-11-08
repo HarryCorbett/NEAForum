@@ -10,11 +10,11 @@ if (isset($_SESSION['user'])) {
 } else {
     include 'navbar_loggedout.php';
 }
+
 ?>
 
 <body>
 
-<title>Education Forum</title>
 
 <h3 class = "w3-center " style="margin-top: 5%;  font-family: 'Times New Roman', Times, serif; letter-spacing: 2px;">
     Recent posts

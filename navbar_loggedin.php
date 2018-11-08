@@ -105,6 +105,7 @@
     </div>
 
     <a href="/includes/Logout.php" class="w3-bar-item w3-button w3-right" id="logoutbtn">Logout</a>
+    <a href="accountpage.php" class="w3-bar-item w3-button w3-right" id="logoutbtn">Account</a>
 
 
 </div>

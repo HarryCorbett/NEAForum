@@ -164,9 +164,9 @@
 
     // open the modal
     loginbtn.onclick = function() {
-        <?php $_SESSION['loginmessage'] = NULL ?>
+        <?php $_SESSION['loginmessage'] = '' ; ?>
         loginmodal.style.display = "block";
-    }
+    };
 
     // When the user clicks on(x), close the modal
     loginspan.onclick = function() {
@@ -183,7 +183,7 @@
         if (event.target === createmodal) {
             createmodal.style.display = "none";
         }
-    }
+    };
 
     if(window.location.href.indexOf('#login') !== -1) {
         loginmodal.style.display = "block";
@@ -255,7 +255,7 @@
     // When the user clicks on <span> (x), close the modal
     createspan.onclick = function() {
         createmodal.style.display = "none";
-    }
+    };
 
     if(window.location.href.indexOf('#createerror') !== -1) {
         createmodal.style.display = "block";
@@ -263,6 +263,7 @@
 
 
 </script>
+
 </html>
 
 
