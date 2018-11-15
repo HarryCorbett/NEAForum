@@ -37,16 +37,20 @@ if(mysqli_query($conn, $sql)) {
 
                     mysqli_query($conn,"INSERT INTO tags (tag_name) VALUES ('$value')" );
 
+                    $newtagtidrow =  mysqli_query($conn , "SELECT tag_id FROM tags ORDER BY tag_id DESC LIMIT 1");
+                    $row2 = mysqli_fetch_array($newtagtidrow, MYSQLI_ASSOC);
+                    $tagid = $row2['tag_id'];
+
+
+                }else{
+
+                    $row3 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                    $tagid = $row3['tag_id'];
+
                 }
 
-            $newtagtidrow =  mysqli_query($conn , "SELECT tag_id FROM tags ORDER BY tag_id DESC LIMIT 1");
-            $row2 = mysqli_fetch_array($newtagtidrow, MYSQLI_ASSOC);
-            $newtagid = $row2['tag_id'];
+            mysqli_query($conn, "INSERT INTO posttags VALUES ('$tagid','$newpostid')");
 
-            echo $newpostid;
-            echo $newtagid;
-
-            mysqli_query($conn, "INSERT INTO posttags VALUES ('$newtagid','$newpostid')");
 
         }
 
@@ -77,12 +81,6 @@ if(mysqli_query($conn, $sql)) {
 
         /* check file type */
         $fileType = $_FILES['file']['type'];
-
-        echo $postid . "<br>";
-        echo $fileName . "<br>";
-        echo $fileSize . "<br>";
-        echo $fileError . "<br>";
-        echo $fileType . "<br>";
 
         /* Gets file name and extension separately */
         $fileExt = explode("/", $fileType);
