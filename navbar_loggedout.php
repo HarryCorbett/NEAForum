@@ -120,7 +120,6 @@
 <br><br>
 
 <!-- Login -->
-<!-- The Modal -->
 <div id="loginmodal" class="modal">
 
     <!-- Modal content -->
@@ -156,10 +155,10 @@
     // Get the modal
     const loginmodal = document.getElementById("loginmodal");
 
-    // Get the button that opens the modal
+    // Button that opens the modal
     const loginbtn = document.getElementById("loginbtn");
 
-    // Get the <span> element that closes the modal
+    // closes the modal
     const loginspan = document.getElementsByClassName("closelogin")[0];
 
     // open the modal
@@ -168,7 +167,7 @@
         loginmodal.style.display = "block";
     };
 
-    // When the user clicks on(x), close the modal
+    // close the modal
     loginspan.onclick = function() {
         loginmodal.style.display = "none";
 
@@ -241,18 +240,18 @@
     // Get the modal
     const createmodal = document.getElementById("createmodal");
 
-    // Get the button that opens the modal
+    // Button that opens the modal
     const createbtn = document.getElementById("createbtn");
 
-    // Get the <span> element that closes the modal
+    // Element that closes the modal
     const createspan = document.getElementsByClassName("closecreate")[0];
 
-    // When the user clicks the button, open the modal
+    // open the modal
     createbtn.onclick = function() {
         createmodal.style.display = "block";
     };
 
-    // When the user clicks on <span> (x), close the modal
+    // close the modal
     createspan.onclick = function() {
         createmodal.style.display = "none";
     };

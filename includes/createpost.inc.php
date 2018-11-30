@@ -85,34 +85,33 @@ if(mysqli_query($conn, $sql)) {
         /* Gets file name and extension separately */
         $fileExt = explode("/", $fileType);
 
-        /* Sets the file extension (the end section of explode function array) to lower case */
+        /* Set file extension to lower case */
         $fileActualExt = strtolower(end($fileExt));
-
-        echo "File type: " . $fileActualExt . "<br>";
 
         /* setting allowed files */
         $allowed = array("jpg", "jpeg", "png", "pdf", "txt");
 
-        /* checks the file type is allowed */
+        /* checks the file type */
         if (in_array($fileActualExt, $allowed)) {
 
-            /* checks there are no errors in uploading */
+            /* check there are no errors in uploading */
             if ($fileError === 0) {
-                /* file no larger than n Kb */
-                if ($fileSize < 50000) {
+                /* file no larger than set value in Kb */
+                if ($fileSize < 5000) {
 
                     /*making a file for that post*/
                     if (mkdir("../Uploads/" . $postid)) {
                         echo "created successfully";
                     }
 
-                    /* set to unique id for the file */
+                    /* set to unique id for the attachment */
                     $fileNameNew = uniqid('', true) . "." . $fileActualExt;
                     $fileDestination = '../Uploads/' . $postid . '/' . $fileNameNew;
 
                     move_uploaded_file($fileTempName, $fileDestination);
 
                     $sql3 = "UPDATE posts SET post_attachment = '$fileNameNew', post_attachment_name = '$fileName' where post_id = '$postid'";
+
                     if (mysqli_query($conn, $sql3)) {
                         header("location: ../");
                     }

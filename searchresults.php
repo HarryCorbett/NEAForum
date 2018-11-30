@@ -32,6 +32,7 @@ $tagsearch = trim($tagsearch,"' ', ''" );
 $questionsearch = trim($questionsearch,"' ', ''" );
 
 
+
     $sql = "SELECT DISTINCT posts.post_id FROM posts 
             LEFT JOIN users ON posts.post_user = users.id 
             LEFT JOIN posttags ON posts.post_id = posttags.post_id
@@ -44,6 +45,7 @@ $questionsearch = trim($questionsearch,"' ', ''" );
     $postids = mysqli_fetch_array($result,MYSQLI_ASSOC);
 
     if (mysqli_num_rows($result) > 0) {
+
         foreach($result as $postids){
             foreach($postids as $postid){
 

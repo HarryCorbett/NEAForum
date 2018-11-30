@@ -95,7 +95,7 @@
 <div class="w3-bar w3-white w3-top topnav w3-white" style="position: fixed; letter-spacing:4px; border-bottom: 1px solid black;">
 
     <a href="../" class="w3-bar-item w3-button">Home</a>
-    <a href="../createpost.php" class="w3-bar-item w3-button">Create Post</a>
+    <a href="createpost.php" class="w3-bar-item w3-button">Create Post</a>
 
     <div class="search-container">
         <form action="includes/search.php" >
@@ -109,4 +109,3 @@
 
 
 </div>
-</body>
