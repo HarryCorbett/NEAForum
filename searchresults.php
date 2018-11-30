@@ -32,6 +32,12 @@ $tagsearch = trim($tagsearch,"' ', ''" );
 $questionsearch = trim($questionsearch,"' ', ''" );
 
 
+$emptysearchterm = "emptystringthatwontbeinatitle";
+if ($questionsearch == ""){
+    $questionsearch = '%'.$emptysearchterm.'%';
+}else{
+    $questionsearch = '%'.$questionsearch.'%';
+}
 
     $sql = "SELECT DISTINCT posts.post_id FROM posts 
             LEFT JOIN users ON posts.post_user = users.id 
@@ -39,7 +45,6 @@ $questionsearch = trim($questionsearch,"' ', ''" );
             LEFT JOIN tags ON posttags.tag_id = tags.tag_id  
             WHERE posts.post_title LIKE '$questionsearch' OR users.name = '$usersearch' OR tags.tag_name LIKE '$tagsearch'
             ORDER BY posts.post_date DESC";
-
 
     $result = mysqli_query($conn, $sql);
     $postids = mysqli_fetch_array($result,MYSQLI_ASSOC);
