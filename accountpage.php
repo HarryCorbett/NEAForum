@@ -16,7 +16,7 @@ $sql = "SELECT email,name,date FROM users WHERE id = $userid ";
 $details = mysqli_query($conn,$sql);
 $row = mysqli_fetch_array($details,MYSQLI_ASSOC);
 
-$repquery = "SELECT SUM(value) AS rep FROM votes WHERE votes.user_id = '$userid'";
+$repquery = "SELECT SUM(value) AS rep FROM votes,replies WHERE replies.reply_id = votes.reply_id AND replies.reply_by = '$userid'";
 $fetchrep = mysqli_query($conn, $repquery);
 $reprow = mysqli_fetch_array($fetchrep, MYSQLI_ASSOC);
 $rep = $reprow['rep'];

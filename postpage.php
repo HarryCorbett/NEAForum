@@ -164,7 +164,7 @@ if (mysqli_num_rows($result) > 0) {
             $row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC);
             $name = $row2['name'];
 
-            $repquery = "SELECT SUM(value) AS rep FROM votes WHERE votes.user_id = '$reply_by'";
+            $repquery = "SELECT SUM(value) AS rep FROM votes,replies WHERE replies.reply_id = votes.reply_id AND replies.reply_by = '$reply_by'";
             $fetchrep = mysqli_query($conn, $repquery);
             $reprow = mysqli_fetch_array($fetchrep, MYSQLI_ASSOC);
             $rep = $reprow['rep'];
