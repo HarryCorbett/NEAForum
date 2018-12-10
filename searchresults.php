@@ -9,6 +9,18 @@ if (isset($_SESSION['user'])) {
 } else {
     include 'navbar_loggedout.php';
 }
+
+$usersearch = $_GET['usersearch'];
+$tagsearch = $_GET['tagsearch'];
+$questionsearch = $_GET['questionsearch'];
+$sort = $_GET['sort'];
+
+if(empty($sort)){
+    $sort = 'time';
+}
+$sort = 'rel';
+echo $sort;
+
 ?>
 
 <title>Education Forum</title>
@@ -19,25 +31,32 @@ if (isset($_SESSION['user'])) {
     Search results
 </h3>
 
+<div class = "w3-left " id="sortingmethod" style="letter-spacing: 2px; padding-bottom: 0;margin-left:25%; margin-right:25%; margin-top: 5%;border-bottom: 1px solid #aaa; ">
+    Sort by:
+    <a href="searchresults.php?usersearch=<?echo $usersearch?>&tagsearch=<? echo $tagsearch ?>&questionsearch=<?echo $questionsearch?>&sort=rel" class="w3-button" >Relevance</a>
+    <a href="searchresults.php?usersearch=<?echo $usersearch?>&tagsearch=<? echo $tagsearch ?>&questionsearch=<?echo $questionsearch?>&sort=time" class="w3-button" >Time posted</a>
+
+
+</div><br><br><br>
+
 <div style="margin-left:25%; margin-right:25%; margin-top: 5%; margin-bottom: 5%;">
 
 <?
 
-$usersearch = $_GET['usersearch'];
-$tagsearch = $_GET['tagsearch'];
-$questionsearch = $_GET['questionsearch'];
-
-$usersearch = trim($usersearch,"' ', ''" );
-$tagsearch = trim($tagsearch,"' ', ''" );
-$questionsearch = trim($questionsearch,"' ', ''" );
+$usersearch = trim($usersearch, "' ', ''");
+$tagsearch = trim($tagsearch, "' ', ''");
+$questionsearch = trim($questionsearch, "' ', ''");
 
 
-$emptysearchterm = "emptystringthatwontbeinatitle";
-if ($questionsearch == ""){
-    $questionsearch = '%'.$emptysearchterm.'%';
-}else{
-    $questionsearch = '%'.$questionsearch.'%';
-}
+
+if($sort == 'time') {
+
+    $emptysearchterm = "emptystringthatwontbeinatitle";
+    if ($questionsearch == "") {
+        $questionsearch = '%' . $emptysearchterm . '%';
+    } else {
+        $questionsearch = '%' . $questionsearch . '%';
+    }
 
     $sql = "SELECT DISTINCT posts.post_id FROM posts 
             LEFT JOIN users ON posts.post_user = users.id 
@@ -47,16 +66,16 @@ if ($questionsearch == ""){
             ORDER BY posts.post_date DESC";
 
     $result = mysqli_query($conn, $sql);
-    $postids = mysqli_fetch_array($result,MYSQLI_ASSOC);
+    $postids = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
     if (mysqli_num_rows($result) > 0) {
 
-        foreach($result as $postids){
-            foreach($postids as $postid){
+        foreach ($result as $postids) {
+            foreach ($postids as $postid) {
 
-            $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
-            $postinfo = mysqli_query($conn,$getpostinfo);
-            $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
+                $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
+                $postinfo = mysqli_query($conn, $getpostinfo);
+                $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
 
 
                 // Fetching username
@@ -64,7 +83,7 @@ if ($questionsearch == ""){
 
                 $getusername = "SELECT DISTINCT name FROM users WHERE id = '$postuser'";
                 $name = mysqli_query($conn, $getusername);
-                $namerow = mysqli_fetch_array($name,MYSQLI_ASSOC);
+                $namerow = mysqli_fetch_array($name, MYSQLI_ASSOC);
                 $name = $namerow['name'];
 
 
@@ -79,11 +98,71 @@ if ($questionsearch == ""){
                     <br><br>
                 </a>
                 <?
-            }}
-    }else {
-
-                ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label>  <?
             }
+        }
+    } else {
+
+        ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label>  <?
+    }
+
+
+
+
+
+}elseif($sort == 'rel'){
+
+
+    $soundexquestion = "";
+    $soundexpostids = array();
+
+    $questionsarray = explode(" ",$questionsearch);
+
+    foreach ($questionsarray as $word){
+
+        $soundexquestion = $soundexquestion.soundex($word)." ";
+
+    }
+
+    $sql = "SELECT post_title FROM posts";
+    $result = mysqli_query($conn,$sql);
+
+    while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+        $title = $row['post_title'];
+        $soundextitle = "";
+
+            $newtitle = preg_replace("/(?![.=$'€%-])\p{P}/u", "", $title);
+            echo "title: " . $newtitle; ?> <br> <?
+
+            $splittitle = explode(" ", $newtitle);
+
+            foreach ($splittitle as $titlewords) {
+                $soundextitle = $soundextitle . soundex($titlewords) . " ";
+            }
+
+            echo "Soundex title: " . $soundextitle; ?> <br> <?
+            echo "Soundex question: " . $soundexquestion; ?> <br> <?
+
+
+            if (strpos($soundextitle, $soundexquestion) !== false) {
+
+                $getid = "SELECT post_id FROM posts WHERE post_title = '$title'";
+                $titleidresult = mysqli_query($conn, $getid);
+                $titleidarray = mysqli_fetch_array($titleidresult, MYSQLI_ASSOC);
+
+                echo "title: " . $title; ?> <br> <?
+
+                foreach ($titleidarray as $titleid) {
+                    array_push($soundexpostids, $titleid);
+
+                }
+            }
+        }
+
+        foreach ($soundexpostids as $id) {
+            echo $id . " ";
+        }
+
+}
         ?>
 
 </div>
