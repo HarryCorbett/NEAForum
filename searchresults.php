@@ -18,7 +18,7 @@ $sort = $_GET['sort'];
 if(empty($sort)){
     $sort = 'time';
 }
-$sort = 'rel';
+
 echo $sort;
 
 ?>
@@ -54,64 +54,9 @@ if($sort == 'time') {
     $emptysearchterm = "emptystringthatwontbeinatitle";
     if ($questionsearch == "") {
         $questionsearch = '%' . $emptysearchterm . '%';
-    } else {
-        $questionsearch = '%' . $questionsearch . '%';
-    }
 
-    $sql = "SELECT DISTINCT posts.post_id FROM posts 
-            LEFT JOIN users ON posts.post_user = users.id 
-            LEFT JOIN posttags ON posts.post_id = posttags.post_id
-            LEFT JOIN tags ON posttags.tag_id = tags.tag_id  
-            WHERE posts.post_title LIKE '$questionsearch' OR users.name = '$usersearch' OR tags.tag_name LIKE '$tagsearch'
-            ORDER BY posts.post_date DESC";
-
-    $result = mysqli_query($conn, $sql);
-    $postids = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-    if (mysqli_num_rows($result) > 0) {
-
-        foreach ($result as $postids) {
-            foreach ($postids as $postid) {
-
-                $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
-                $postinfo = mysqli_query($conn, $getpostinfo);
-                $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
-
-
-                // Fetching username
-                $postuser = $row['post_user'];
-
-                $getusername = "SELECT DISTINCT name FROM users WHERE id = '$postuser'";
-                $name = mysqli_query($conn, $getusername);
-                $namerow = mysqli_fetch_array($name, MYSQLI_ASSOC);
-                $name = $namerow['name'];
-
-
-                ?>
-                <a href="postpage.php?postid=<? echo $postid; ?>" style="text-decoration: none;">
-                    <div style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">
-                        <label class=""> <? echo $row['post_title'] ?></label><br><br>
-                        <label class=""> <? echo $name ?> </label>
-                        <label class="w3-right"> <? echo $row['post_date'] ?></label>
-                        <br>
-                    </div>
-                    <br><br>
-                </a>
-                <?
-            }
-        }
     } else {
 
-        ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label>  <?
-    }
-
-
-
-
-
-}elseif($sort == 'rel') {
-
-    if ($questionsearch !== "") {
         $soundexquestion = "";
         $soundexpostids = array();
 
@@ -162,62 +107,75 @@ if($sort == 'time') {
         //}
 
     }
-}
 
-$finalpostids = array();
-
-
-$sql = "SELECT DISTINCT posts.post_id FROM posts 
+    $sql = "SELECT DISTINCT posts.post_id FROM posts 
             LEFT JOIN users ON posts.post_user = users.id 
             LEFT JOIN posttags ON posts.post_id = posttags.post_id
             LEFT JOIN tags ON posttags.tag_id = tags.tag_id  
-            WHERE users.name = '$usersearch' OR tags.tag_name = '$tagsearch'";
+            WHERE users.name = '$usersearch' OR tags.tag_name LIKE '$tagsearch'
+            ORDER BY posts.post_date DESC";
 
-$result = mysqli_query($conn, $sql);
-$postids = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $result = mysqli_query($conn, $sql);
+    $postids = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
+    $finalpostids = array();
 
-foreach($postids as $id){
-    array_push($finalpostids,$id);
-}
-foreach($soundexpostids as $id){
-    array_push($finalpostids,$id);
-}
-
-if(count($finalpostids) !== 0){
-    foreach ($finalpostids as $postid) {
-
-            $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
-            $postinfo = mysqli_query($conn, $getpostinfo);
-            $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
-
-
-            // Fetching username
-            $postuser = $row['post_user'];
-
-            $getusername = "SELECT DISTINCT name FROM users WHERE id = '$postuser'";
-            $name = mysqli_query($conn, $getusername);
-            $namerow = mysqli_fetch_array($name, MYSQLI_ASSOC);
-            $name = $namerow['name'];
-
-
-            ?>
-            <a href="postpage.php?postid=<? echo $postid; ?>" style="text-decoration: none;">
-                <div style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">
-                    <label class=""> <? echo $row['post_title'] ?></label><br><br>
-                    <label class=""> <? echo $name ?> </label>
-                    <label class="w3-right"> <? echo $row['post_date'] ?></label>
-                    <br>
-                </div>
-                <br><br>
-            </a>
-            <?
-
+    foreach ($result as $postids) {
+        foreach ($postids as $postid) {
+                if(!in_array($postid,$finalpostids)){
+                    array_push($finalpostids,$postid);
+                }
+        }
     }
-} else {
 
-    ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label>  <?
+    foreach($soundexpostids as $postid){
+            if(!in_array($postid,$finalpostids)){
+                array_push($finalpostids, $postid);
+            }
+    }
+
+
+    // ------- Add code to sort $finalpostids by time --------
+
+
+    if (count($finalpostids) > 0) {
+        foreach($finalpostids as $postid){
+
+                $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
+                $postinfo = mysqli_query($conn, $getpostinfo);
+                $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
+
+
+                // Fetching username
+                $postuser = $row['post_user'];
+
+                $getusername = "SELECT DISTINCT name FROM users WHERE id = '$postuser'";
+                $name = mysqli_query($conn, $getusername);
+                $namerow = mysqli_fetch_array($name, MYSQLI_ASSOC);
+                $name = $namerow['name'];
+
+
+                ?>
+                <a href="postpage.php?postid=<? echo $postid; ?>" style="text-decoration: none;">
+                    <div style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">
+                        <label class=""> <? echo $row['post_title'] ?></label><br><br>
+                        <label class=""> <? echo $name ?> </label>
+                        <label class="w3-right"> <? echo $row['post_date'] ?></label>
+                        <br>
+                    </div>
+                    <br><br>
+                </a>
+                <?
+            }
+        }
+    } else {
+
+        ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no
+            results</label>  <?
+
 }
+
+
 
 
 
