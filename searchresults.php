@@ -109,38 +109,34 @@ if($sort == 'time') {
 
 
 
-}elseif($sort == 'rel'){
+}elseif($sort == 'rel') {
 
+    if ($questionsearch !== "") {
+        $soundexquestion = "";
+        $soundexpostids = array();
 
-    $soundexquestion = "";
-    $soundexpostids = array();
+        $questionsarray = explode(" ", $questionsearch);
 
-    $questionsarray = explode(" ",$questionsearch);
+        foreach ($questionsarray as $word) {
 
-    foreach ($questionsarray as $word){
+            $soundexquestion = $soundexquestion . soundex($word) . " ";
 
-        $soundexquestion = $soundexquestion.soundex($word)." ";
+        }
 
-    }
+        $sql = "SELECT post_title FROM posts";
+        $result = mysqli_query($conn, $sql);
 
-    $sql = "SELECT post_title FROM posts";
-    $result = mysqli_query($conn,$sql);
-
-    while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-        $title = $row['post_title'];
-        $soundextitle = "";
+        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $title = $row['post_title'];
+            $soundextitle = "";
 
             $newtitle = preg_replace("/(?![.=$'€%-])\p{P}/u", "", $title);
-            echo "title: " . $newtitle; ?> <br> <?
 
             $splittitle = explode(" ", $newtitle);
 
             foreach ($splittitle as $titlewords) {
                 $soundextitle = $soundextitle . soundex($titlewords) . " ";
             }
-
-            echo "Soundex title: " . $soundextitle; ?> <br> <?
-            echo "Soundex question: " . $soundexquestion; ?> <br> <?
 
 
             if (strpos($soundextitle, $soundexquestion) !== false) {
@@ -149,8 +145,6 @@ if($sort == 'time') {
                 $titleidresult = mysqli_query($conn, $getid);
                 $titleidarray = mysqli_fetch_array($titleidresult, MYSQLI_ASSOC);
 
-                echo "title: " . $title; ?> <br> <?
-
                 foreach ($titleidarray as $titleid) {
                     array_push($soundexpostids, $titleid);
 
@@ -158,12 +152,78 @@ if($sort == 'time') {
             }
         }
 
-        foreach ($soundexpostids as $id) {
-            echo $id . " ";
-        }
+        // -- Testing --
+        //echo "title: " . $title;
+        //echo "title: " . $newtitle;
+        //echo "Soundex title: " . $soundextitle;
+        //echo "Soundex question: " . $soundexquestion;
+        //foreach ($soundexpostids as $id) {
+        //    echo $id . " ";
+        //}
 
+    }
 }
-        ?>
+
+$finalpostids = array();
+
+
+$sql = "SELECT DISTINCT posts.post_id FROM posts 
+            LEFT JOIN users ON posts.post_user = users.id 
+            LEFT JOIN posttags ON posts.post_id = posttags.post_id
+            LEFT JOIN tags ON posttags.tag_id = tags.tag_id  
+            WHERE users.name = '$usersearch' OR tags.tag_name = '$tagsearch'";
+
+$result = mysqli_query($conn, $sql);
+$postids = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+
+foreach($postids as $id){
+    array_push($finalpostids,$id);
+}
+foreach($soundexpostids as $id){
+    array_push($finalpostids,$id);
+}
+
+if(count($finalpostids) !== 0){
+    foreach ($finalpostids as $postid) {
+
+            $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
+            $postinfo = mysqli_query($conn, $getpostinfo);
+            $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
+
+
+            // Fetching username
+            $postuser = $row['post_user'];
+
+            $getusername = "SELECT DISTINCT name FROM users WHERE id = '$postuser'";
+            $name = mysqli_query($conn, $getusername);
+            $namerow = mysqli_fetch_array($name, MYSQLI_ASSOC);
+            $name = $namerow['name'];
+
+
+            ?>
+            <a href="postpage.php?postid=<? echo $postid; ?>" style="text-decoration: none;">
+                <div style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">
+                    <label class=""> <? echo $row['post_title'] ?></label><br><br>
+                    <label class=""> <? echo $name ?> </label>
+                    <label class="w3-right"> <? echo $row['post_date'] ?></label>
+                    <br>
+                </div>
+                <br><br>
+            </a>
+            <?
+
+    }
+} else {
+
+    ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label>  <?
+}
+
+
+
+
+
+?>
 
 </div>
 
