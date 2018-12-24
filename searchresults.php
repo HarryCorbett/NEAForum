@@ -33,8 +33,8 @@ echo $sort;
 
 <div class = "w3-left " id="sortingmethod" style="letter-spacing: 2px; padding-bottom: 0;margin-left:25%; margin-right:25%; margin-top: 5%;border-bottom: 1px solid #aaa; ">
     Sort by:
-    <a href="searchresults.php?usersearch=<?echo $usersearch?>&tagsearch=<? echo $tagsearch ?>&questionsearch=<?echo $questionsearch?>&sort=rel" class="w3-button" >Relevance</a>
     <a href="searchresults.php?usersearch=<?echo $usersearch?>&tagsearch=<? echo $tagsearch ?>&questionsearch=<?echo $questionsearch?>&sort=time" class="w3-button" >Time posted</a>
+    <a href="searchresults.php?usersearch=<?echo $usersearch?>&tagsearch=<? echo $tagsearch ?>&questionsearch=<?echo $questionsearch?>&sort=upvotes" class="w3-button" >Reply upvotes</a>
 
 
 </div><br><br><br>
@@ -48,8 +48,6 @@ $tagsearch = trim($tagsearch, "' ', ''");
 $questionsearch = trim($questionsearch, "' ', ''");
 
 
-
-if($sort == 'time') {
 
     $emptysearchterm = "emptystringthatwontbeinatitle";
     if ($questionsearch == "") {
@@ -135,7 +133,7 @@ if($sort == 'time') {
     }
 
 
-    // ------- Add code to sort $finalpostids by time --------
+if($sort == 'time') {
 
 
     if (count($finalpostids) > 0) {
@@ -167,20 +165,103 @@ if($sort == 'time') {
                 </a>
                 <?
             }
-        }
+
     } else {
 
+                ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label> <?
+    }
+
+}elseif($sort = "upvotes") {
+
+    if (count($finalpostids) > 0) {
+
+        $upvotes = array();
+
+
+        foreach ($finalpostids as $postid) {
+            $sql = "SELECT SUM(value) AS upvotes FROM votes,replies,posts WHERE votes.reply_id = replies.reply_id AND replies.reply_post = posts.post_id AND posts.post_id = '$postid' ";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_array($result);
+            $value = $row['upvotes'];
+            if ($value == null) {
+                array_push($upvotes, "0");
+            } else {
+                array_push($upvotes, $value);
+            }
+        }
+
+        print_r($upvotes);
+
+        // ----- Merge Sort -----
+
+        function mergesort($array)
+        {
+            if (count($array) == 1) {
+                return $array;
+            }
+            $len = count($array);
+
+            // Split arrays
+            $lefthalf = array_slice($array, 0, $len / 2);
+            $righthalf = array_slice($array, $len / 2);
+
+            //recursive loop to keep spliting
+            $lefthalf = mergesort($lefthalf);
+            $righthalf = mergesort($righthalf);
+
+            // gradually combine the arrays into one ordered array
+            return mergearrays($lefthalf, $righthalf);
+
+        }
+
+        function mergearrays($lefthalf, $righthalf)
+        {
+
+            // array to  add to
+            $temp = array();
+
+
+            while (count($lefthalf) > 0 and count($righthalf) > 0) {
+
+                if ($lefthalf[0] > $righthalf[0]) {
+                    $temp[] = $righthalf[0];
+                    $righthalf = array_slice($righthalf, 1);
+
+                } else {
+                    $temp[] = $lefthalf[0];
+                    $lefthalf = array_slice($lefthalf, 1);
+                }
+            }
+            // add all of remaining left to array
+            while (count($lefthalf) > 0) {
+                $temp[] = $lefthalf[0];
+                $lefthalf = array_slice($lefthalf, 1);
+            }
+            // add all of remaining right to array
+            while (count($righthalf) > 0) {
+                $temp[] = $righthalf[0];
+                $righthalf = array_slice($righthalf, 1);
+            }
+            return $temp;
+        }
+
+        echo "Final:";
+        echo implode(', ', mergesort($upvotes));
+        $sortedarray = mergesort($upvotes);
+
+
+        
+
+
+
+
+
+
+    } else {
         ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no
-            results</label>  <?
-
+            results</label> <?
+    }
 }
-
-
-
-
-
-
-
 ?>
 
 </div>
