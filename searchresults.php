@@ -184,13 +184,14 @@ if($sort == 'time') {
             $row = mysqli_fetch_array($result);
             $value = $row['upvotes'];
             if ($value == null) {
-                array_push($upvotes, "0");
+                $upvotes[$postid] = 0;
             } else {
-                array_push($upvotes, $value);
+                $upvotes[$postid] = $value;
             }
         }
 
         print_r($upvotes);
+
 
         // ----- Merge Sort -----
 
@@ -205,7 +206,7 @@ if($sort == 'time') {
             $lefthalf = array_slice($array, 0, $len / 2);
             $righthalf = array_slice($array, $len / 2);
 
-            //recursive loop to keep spliting
+            //recursive loop to keep splitting
             $lefthalf = mergesort($lefthalf);
             $righthalf = mergesort($righthalf);
 
@@ -249,14 +250,21 @@ if($sort == 'time') {
         echo implode(', ', mergesort($upvotes));
         $sortedarray = mergesort($upvotes);
 
+        print_r($sortedarray);
 
+        ?> <br> <?
+
+        $finalpostids = array();
+        $checkarray = $upvotes;
+
+        foreach($sortedarray as $upvoteval){
+            $key = array_search($upvoteval, $checkarray);
+            array_push($finalpostids,$key);
+            unset($checkarray[$key]);
+        }
+
+        print_r($finalpostids);
         
-
-
-
-
-
-
     } else {
         ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no
             results</label> <?
