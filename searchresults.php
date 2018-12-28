@@ -19,8 +19,6 @@ if(empty($sort)){
     $sort = 'time';
 }
 
-echo $sort;
-
 ?>
 
 <title>Education Forum</title>
@@ -133,50 +131,66 @@ $questionsearch = trim($questionsearch, "' ', ''");
     }
 
 
+
+
+    function printposts($finalpostids,$conn){
+
+        foreach($finalpostids as $postid){
+
+            $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
+            $postinfo = mysqli_query($conn, $getpostinfo);
+            $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
+
+
+            // Fetching username
+            $postuser = $row['post_user'];
+
+            $getusername = "SELECT DISTINCT name FROM users WHERE id = '$postuser'";
+            $name = mysqli_query($conn, $getusername);
+            $namerow = mysqli_fetch_array($name, MYSQLI_ASSOC);
+            $name = $namerow['name'];
+
+
+            ?>
+            <a href="postpage.php?postid=<? echo $postid; ?>" style="text-decoration: none;">
+                <div style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">
+                    <label class=""> <? echo $row['post_title'] ?></label><br><br>
+                    <label class=""> <? echo $name ?> </label>
+                    <label class="w3-right"> <? echo $row['post_date'] ?></label>
+                    <br>
+                </div>
+                <br><br>
+            </a>
+            <?
+        }
+
+
+}
+
+
+// ---------------------------- //
+
+
 if($sort == 'time') {
 
 
     if (count($finalpostids) > 0) {
-        foreach($finalpostids as $postid){
 
-                $getpostinfo = "SELECT post_title, post_date, post_user FROM posts WHERE post_id = $postid";
-                $postinfo = mysqli_query($conn, $getpostinfo);
-                $row = mysqli_fetch_array($postinfo, MYSQLI_ASSOC);
-
-
-                // Fetching username
-                $postuser = $row['post_user'];
-
-                $getusername = "SELECT DISTINCT name FROM users WHERE id = '$postuser'";
-                $name = mysqli_query($conn, $getusername);
-                $namerow = mysqli_fetch_array($name, MYSQLI_ASSOC);
-                $name = $namerow['name'];
-
-
-                ?>
-                <a href="postpage.php?postid=<? echo $postid; ?>" style="text-decoration: none;">
-                    <div style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">
-                        <label class=""> <? echo $row['post_title'] ?></label><br><br>
-                        <label class=""> <? echo $name ?> </label>
-                        <label class="w3-right"> <? echo $row['post_date'] ?></label>
-                        <br>
-                    </div>
-                    <br><br>
-                </a>
-                <?
-            }
+        printposts($finalpostids,$conn);
 
     } else {
-
-                ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label> <?
+        ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no results</label> <?
     }
+
+
+// ---------------------------- //
+
 
 }elseif($sort = "upvotes") {
 
     if (count($finalpostids) > 0) {
 
         $upvotes = array();
-
 
         foreach ($finalpostids as $postid) {
             $sql = "SELECT SUM(value) AS upvotes FROM votes,replies,posts WHERE votes.reply_id = replies.reply_id AND replies.reply_post = posts.post_id AND posts.post_id = '$postid' ";
@@ -190,7 +204,6 @@ if($sort == 'time') {
             }
         }
 
-        print_r($upvotes);
 
 
         // ----- Merge Sort -----
@@ -246,13 +259,7 @@ if($sort == 'time') {
             return $temp;
         }
 
-        echo "Final:";
-        echo implode(', ', mergesort($upvotes));
         $sortedarray = mergesort($upvotes);
-
-        print_r($sortedarray);
-
-        ?> <br> <?
 
         $finalpostids = array();
         $checkarray = $upvotes;
@@ -263,12 +270,16 @@ if($sort == 'time') {
             unset($checkarray[$key]);
         }
 
-        print_r($finalpostids);
-        
+        $finalpostids = array_reverse($finalpostids);
+
+        printposts($finalpostids,$conn);
+
     } else {
         ?> <label style="letter-spacing: 2px; border-bottom:1px solid #ccc ; padding-bottom: 0;">Your search found no
             results</label> <?
     }
+
+
 }
 ?>
 
